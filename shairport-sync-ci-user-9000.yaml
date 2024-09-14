@@ -6,13 +6,22 @@ ssh_authorized_keys:
 locale: de_DE.UTF-8
 timezone: Europe/Berlin
 runcmd:
+  - amixer -c 1 sset 'Headphone' unmute
+  - amixer -c 1 sset 'Headphone' 100%
+  - amixer -c 1 sset 'Speaker' 0%
+  - amixer -c 1 sset 'Speaker' mute
+  - amixer -c 1 sset 'Master' unmute
+  - alsactl store
   - systemctl enable podman.socket
   - systemctl start podman.socket
   - systemctl enable podman-restart
   - systemctl start podman-restart
   - "COMPOSE_PATH=/usr/bin/docker-compose && curl --location 'https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64' --output $COMPOSE_PATH && chmod 755 $COMPOSE_PATH"
+  - cd /home/*
   - git clone 'https://github.com/Alex1s/shairport-sync-docker-server.git'
+  - chown -R 1000:1000 shairport-sync-docker-server
   - cd shairport-sync-docker-server && podman compose up -d && cd -
+  - reboot
 package_reboot_if_required: true
 package_update: true
 package_upgrade: true
@@ -20,3 +29,4 @@ packages:
   - qemu-guest-agent
   - podman
   - git-core
+  - alsa-utils
