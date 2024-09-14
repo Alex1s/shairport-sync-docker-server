@@ -1,0 +1,22 @@
+#cloud-config
+hostname: ShairportSync
+manage_etc_hosts: true
+ssh_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII76gjWeMy9xfu7EAD2guCp4QoP9UGQtPEbQgsFLjXSE
+locale: de_DE.UTF-8
+timezone: Europe/Berlin
+runcmd:
+  - systemctl enable podman.socket
+  - systemctl start podman.socket
+  - systemctl enable podman-restart
+  - systemctl start podman-restart
+  - "COMPOSE_PATH=/usr/bin/docker-compose && curl --location 'https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64' --output $COMPOSE_PATH && chmod 755 $COMPOSE_PATH"
+  - git clone 'https://github.com/Alex1s/shairport-sync-docker-server.git'
+  - cd shairport-sync-docker-server && podman compose up -d && cd -
+package_reboot_if_required: true
+package_update: true
+package_upgrade: true
+packages:
+  - qemu-guest-agent
+  - podman
+  - git-core
