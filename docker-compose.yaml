@@ -1,0 +1,13 @@
+services:
+  service:
+    image: mikebrady/shairport-sync
+    # https://github.com/containers/podman/issues/20418
+    # https://github.com/containers/podman/pull/20962
+    # restart: unless-stopped
+    restart: always
+    network_mode: host
+    command: -a Küche -- -d hw:1,0 -m hw:1 -c Master
+    volumes:
+      - ./shairport-sync.conf:/etc/shairport-sync.conf:Z
+    devices:
+      - /dev/snd
