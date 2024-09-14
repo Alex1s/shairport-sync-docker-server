@@ -8,6 +8,7 @@ services:
     network_mode: host
     command: -a Küche -- -d hw:1,0 -m hw:1 -c Master
     volumes:
+      # https://docs.docker.com/engine/storage/bind-mounts/#configure-the-selinux-label
       - ./shairport-sync.conf:/etc/shairport-sync.conf:Z
     devices:
       - /dev/snd
