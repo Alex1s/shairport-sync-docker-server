@@ -6,6 +6,8 @@ ssh_authorized_keys:
 locale: de_DE.UTF-8
 timezone: Europe/Berlin
 runcmd:
+  - echo 'options snd_hda_intel power_save=0' >> /etc/modprobe.d/snd_hda_intel.conf
+  - echo 0 > /sys/module/snd_hda_intel/parameters/power_save
   - amixer -c 1 sset 'Headphone' unmute
   - amixer -c 1 sset 'Headphone' 100%
   - amixer -c 1 sset 'Speaker' 0%
