@@ -1,6 +1,5 @@
 #cloud-config
-hostname: ShairportSync
-manage_etc_hosts: true
+hostname: ShairportSyncKueche
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII76gjWeMy9xfu7EAD2guCp4QoP9UGQtPEbQgsFLjXSE
 locale: de_DE.UTF-8
@@ -21,7 +20,11 @@ runcmd:
   - git clone 'https://github.com/Alex1s/shairport-sync-docker-server.git'
   - chown -R 1000:1000 shairport-sync-docker-server
   - cd shairport-sync-docker-server && podman compose up -d && cd -
-  - reboot
+  - DEFAULT_USERNAME=$(basename /home/*)
+  - mkdir /home/"$DEFAULT_USERNAME"/.bashrc.d
+  - echo "alias podman='sudo podman'" >> /home/"$DEFAULT_USERNAME"/.bashrc.d/aliases
+  - echo "alias pc='sudo podman compose'" >> /home/"$DEFAULT_USERNAME"/.bashrc.d/aliases
+  - chown -R 1000:1000 /home/"$DEFAULT_USERNAME"/.bashrc.d
 package_reboot_if_required: true
 package_update: true
 package_upgrade: true
