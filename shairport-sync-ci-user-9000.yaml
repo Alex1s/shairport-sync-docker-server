@@ -1,4 +1,5 @@
 #cloud-config
+prefer_fqdn_over_hostname: false
 hostname: ShairportSyncKueche
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII76gjWeMy9xfu7EAD2guCp4QoP9UGQtPEbQgsFLjXSE
@@ -33,3 +34,5 @@ packages:
   - podman
   - git-core
   - alsa-utils
+  - langpacks-en
+  - langpacks-de
