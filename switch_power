@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+TOKEN=$(cat /run/secrets/ha_access_token)
+wget -qS -O - --header="Authorization: Bearer $TOKEN" --header="Content-Type: application/json" --post-data='{"entity_id": "switch.mini_smart_wi_fi_plug_schalter"}' http://homeassistant.fritz.box:8123/api/services/switch/turn_$1
